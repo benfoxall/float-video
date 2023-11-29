@@ -4,8 +4,7 @@
             Float video
         </title>
         <style>
-            body {
-                color: #fff;       
+            body {    
                 background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
                 background-size: 400% 400%;
                 animation: gradient 90s ease infinite;
@@ -13,11 +12,18 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                transition: all 0.8s ease;
+            }
+            body.active {
+                background: #333
             }
             @keyframes gradient {
                 0% { background-position: 0% 50%; }
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
+            }
+            .active button {
+                display: none;
             }
             button {
                 font-size: 40vmin;
@@ -26,21 +32,24 @@
                 font-family: sans-serif;
                 padding: 20px;
                 border-radius: 10px;
-                transition: all 0.8s ease;
+                transition: all 0.3s ease;
                 cursor: pointer;
             }
             button:hover {
-                transform: scale(1.5);
+                transform: scale(0.8) rotate(-9deg);
             }
         </style>
     </head>
     <body>
         <button>▶️</button>
-        <script>
 
+        <script>
             const button = document.querySelector('button');
 
             async function start() {
+                document.body.classList.add('active');
+
+
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: {
                         width: 640,
@@ -48,7 +57,6 @@
                     }, audio: false
                 });
 
-                button.style.opacity = 0;
 
                 const video = document.createElement('video');
                 
@@ -69,7 +77,7 @@
                 video.srcObject = null;
                 video.remove();
 
-                button.style.opacity = 1;
+                document.body.classList.remove('active');
             }
 
             button.addEventListener('click', start);
